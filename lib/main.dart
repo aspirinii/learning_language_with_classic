@@ -24,6 +24,32 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class Sentence {
+  bool active;
+  final String content;
+
+  Sentence(this.active , this.content);
+
+  LoadData() async {
+    final _rawData = await rootBundle.loadString("assets/frog.csv");
+    List<List<dynamic>> _listData =  const CsvToListConverter().convert(_rawData);
+    
+
+  }
+} 
+
+class SentenceKoean extends Sentence{
+  @override
+  bool active = false;
+
+  SentenceKoean(bool active, String content) : super(active, content);
+}
+
+class SentenceEnglish extends Sentence{
+  SentenceEnglish(bool active, String content) : super(active, content);
+
+}
+
 class Controller extends GetxController{
 
   List numberList = [];
