@@ -1,6 +1,5 @@
 // main.dart
-import 'dart:collection';
-
+// import 'dart:collection';
 import 'package:flutter/material.dart';
 // import 'dart:ui';
 import 'dart:async';
@@ -45,13 +44,20 @@ class SentenceWidget extends StatelessWidget{
             textAlign: TextAlign.center,),
           )
         ),
-        Center(
-          // color: Colors.transparent.withOpacity(0.5),
-          child: Opacity(
-            opacity: model.active ? 1 : 0,
-            child: Text(model.contentK, 
-            textAlign: TextAlign.center,),
-          )
+        GestureDetector(
+          onTap:(){
+            model.changeActivation();
+            print('taptap');
+          },
+          child: Center(
+            // color: Colors.transparent.withOpacity(0.5),
+            child: Obx(() => AnimatedOpacity(
+              opacity: model.active.value ? 1 : 0,
+              duration: const Duration(milliseconds: 500),
+              child: Text(model.contentK, 
+              textAlign: TextAlign.center,),
+            ))
+          ),
         ),
       ],
     );
@@ -60,19 +66,23 @@ class SentenceWidget extends StatelessWidget{
 }
 
 
-class Sentence {
+class Sentence extends GetxController{
   late int id;
-  late bool active;
+  RxBool active = false.obs;
   late String contentK;
   late String contentE;
 
   Sentence(this.id, this.active , this.contentK, this.contentE);
 
   Sentence.fromJson(Map<String, dynamic> json){
-    this.id = int.parse(json['index']);
-    this.active = false;
-    this.contentE = json['contentE'];
-    this.contentK = json['contentK'];
+    id = int.parse(json['index']);
+    active.value = false;
+    contentE = json['contentE'];
+    contentK = json['contentK'];
+  }
+
+  changeActivation(){
+    active.value = !active.value;
   }
 
 } 
@@ -88,28 +98,13 @@ class Controller extends GetxController{
   Future LoadDataJson() async {
     final _rawData = await rootBundle.loadString("assets/frog.json");
 
-    // final List<dynamic> jsonData = json.decode(_rawData);
-    // print(jsonData[0]["contentE"]);
-    // listSentence = Sentence.fromJson(jsonData);
-    // List<Map<String, dynamic>> output = (json.decode(_rawData) as List).cast();
     List<Map<String, dynamic>> output = List.from(json.decode(_rawData) as List);
 
-    // final map = HashMap.fromIterable(jsonData);
+    print(output.runtimeType);
 
-      // print(output.runtimeType);
-      print(output.runtimeType);
-      // var colorList = output2.map((element) => Sentence.fromJson(element)).toList();
-      // for(var color in colorList){
-      //   print('${color.id} ${color.contentK} ${color.contentE}');
-      // }
-      // print(output2[1]["contentK"]);
-    
     return output;
   }
 
-
-
-  
 
   @override
   onInit() {
@@ -133,20 +128,14 @@ class MyHomePage extends StatelessWidget {
         ),
         // // Implement the GridView
         body: 
-
-
         FutureBuilder(
           future: c.dataFromJson,
           builder: (BuildContext context , AsyncSnapshot snap) {
-            // var jsonData = json.decode(snap.data.toString());
-            // print(c.rawData);
-            // print(jsonData);
-            // print(jsonData.runtimeType);
 
             if(snap.hasData){
                 // print(snap.data);
                 print("Snap : ${snap.data.runtimeType}");
-                return Column(
+                return ListView(
                   children: [
                     for (var w in snap.data )
                       SentenceWidget(model : Sentence.fromJson(w)),
