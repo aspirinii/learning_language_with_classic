@@ -1,8 +1,10 @@
 // main.dart
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 // import 'dart:ui';
 import 'dart:async';
-import 'package:csv/csv.dart';
+// import 'package:csv/csv.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';//rootbundle
 import 'dart:convert';
@@ -35,18 +37,20 @@ class SentenceWidget extends StatelessWidget{
     // TODO: implement build
     return Column(
       children: [
-        Container(
-          color: Colors.transparent.withOpacity(0.5),
+        Center(
+          // color: Colors.transparent.withOpacity(0.5),
           child: Opacity(
             opacity: 1,
-            child: Text(model.contentE),
+            child: Text(model.contentE,
+            textAlign: TextAlign.center,),
           )
         ),
-        Container(
-          color: Colors.transparent.withOpacity(0.5),
+        Center(
+          // color: Colors.transparent.withOpacity(0.5),
           child: Opacity(
             opacity: model.active ? 1 : 0,
-            child: Text(model.contentK),
+            child: Text(model.contentK, 
+            textAlign: TextAlign.center,),
           )
         ),
       ],
@@ -61,83 +65,46 @@ class Sentence {
   late bool active;
   late String contentK;
   late String contentE;
-  late List<List<dynamic>> ListData;
 
   Sentence(this.id, this.active , this.contentK, this.contentE);
 
-  Sentence.fromJson(json){
-    this.id = json['index'];
+  Sentence.fromJson(Map<String, dynamic> json){
+    this.id = int.parse(json['index']);
     this.active = false;
     this.contentE = json['contentE'];
     this.contentK = json['contentK'];
   }
 
-  // LoadData() async {
-  //   final _rawData = await rootBundle.loadString("assets/frog.csv");
-  //   List<List<dynamic>> ListData =  const CsvToListConverter().convert(_rawData);
-  //   return ListData;
-  // }
-  // LoadDataJson() async {
-  //   final _rawData = await rootBundle.loadString("assets/frog.json");
-  //   final Map<String, dynamic> jsonData = json.decode(_rawData);
-  //   return jsonData;
-  // }
 } 
 
 
-
-// class SentenceKorean extends Sentence{
-//   @override
-//   bool active = false;
-
-//   SentenceKorean(int id, bool active, String content) : super(id, active, content);
-
-//   // SentenceKorean.fromList(ListData) : super.(super.id = ListData[0][0] , super.active = false , super.content = ListData[2][2] );
-
-
-//   @override
-//   LoadData() async {
-//     final _rawData = await rootBundle.loadString("assets/frog.csv");
-//     List<List<dynamic>> _listData =  const CsvToListConverter().convert(_rawData);
-//     return _listData;
-//   }
-
-// }
-
-// class SentenceEnglish extends Sentence{
-//   SentenceEnglish(int id, bool active, String content) : super(id, active, content);
-
-// }
-
 class Controller extends GetxController{
 
-  List numberList = [];
-  // late List<List<dynamic>> _data;
-  late Future<List<List<dynamic>>> _data;
   var dataFromJson;
   var listSentence;
+  var map;
   late Future<dynamic> rawData;
 
-  Future<List<List<dynamic>>> _loadCSV() async {
-    final _rawData = await rootBundle.loadString("assets/frog.csv");
-    List<List<dynamic>> _listData =  const CsvToListConverter().convert(_rawData);
-    // print('rawData $_rawData');
-    return _listData;
-  }
   Future LoadDataJson() async {
     final _rawData = await rootBundle.loadString("assets/frog.json");
 
-    final List<dynamic> jsonData = json.decode(_rawData);
+    // final List<dynamic> jsonData = json.decode(_rawData);
     // print(jsonData[0]["contentE"]);
     // listSentence = Sentence.fromJson(jsonData);
-              // print(rawData);
-              // print(jsonData);
-              print(jsonData.runtimeType);
-              print(jsonData[2]['contentK']);
-              print("detail type : ${jsonData[2].runtimeType}");
-              // print(jsonData[2][2]);
+    // List<Map<String, dynamic>> output = (json.decode(_rawData) as List).cast();
+    List<Map<String, dynamic>> output = List.from(json.decode(_rawData) as List);
+
+    // final map = HashMap.fromIterable(jsonData);
+
+      // print(output.runtimeType);
+      print(output.runtimeType);
+      // var colorList = output2.map((element) => Sentence.fromJson(element)).toList();
+      // for(var color in colorList){
+      //   print('${color.id} ${color.contentK} ${color.contentE}');
+      // }
+      // print(output2[1]["contentK"]);
     
-    return jsonData;
+    return output;
   }
 
 
@@ -147,7 +114,6 @@ class Controller extends GetxController{
   @override
   onInit() {
 
-    _data = _loadCSV();
     dataFromJson = LoadDataJson();
     // print(dataFromJson);
     print('onInit start');
@@ -182,8 +148,8 @@ class MyHomePage extends StatelessWidget {
                 print("Snap : ${snap.data.runtimeType}");
                 return Column(
                   children: [
-                    // for (var w in snap.data )
-                    //   SentenceWidget(model : Sentence.fromJson(w)),
+                    for (var w in snap.data )
+                      SentenceWidget(model : Sentence.fromJson(w)),
                   ]
                 );
                 }else{
@@ -192,40 +158,6 @@ class MyHomePage extends StatelessWidget {
           }
         )
 
-        // FutureBuilder(
-        //   future: c._data,
-        //   builder: (BuildContext context , AsyncSnapshot snap) {
-        //     if(snap.hasData){
-        //       return GridView.builder(
-        //         padding: const EdgeInsets.all(2),
-        //         // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        //         //     childAspectRatio: 3 / 1,
-        //         //     mainAxisSpacing: 10, 
-        //         //     crossAxisCount: 1),
-        //         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 400),
-
-        //         itemBuilder: (BuildContext ctx, index){
-        //           return Column(
-        //             children: [
-        //               Container(
-        //                       color: Colors.amber,
-        //                       alignment: Alignment.center,
-        //                       child: Text(snap.data[index+1][1], textAlign: TextAlign.center,)
-        //               ),
-        //               Padding(padding: const EdgeInsets.all(2)),
-        //               Container(
-        //                       color: Colors.blueGrey,
-        //                       alignment: Alignment.center,
-        //                       child: Text(snap.data[index+1][2],textAlign: TextAlign.center,)
-        //               )
-        //             ],
-        //           );}
-        //       );
-        //     }else{
-        //       return Text("Wait some time..");
-        //     }
-        //   }
-        // )
 
         );
   }
