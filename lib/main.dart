@@ -38,6 +38,7 @@ class SentenceWidget extends StatelessWidget {
       children: [
         Container(
             padding: EdgeInsets.all(5),
+            width: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(colors: [
                 Color.fromARGB(255, 231, 248, 183),
@@ -59,6 +60,7 @@ class SentenceWidget extends StatelessWidget {
           },
           child: Container(
               padding: EdgeInsets.all(5),
+              width: double.infinity,
               decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
                   Color.fromARGB(255, 231, 248, 183),
