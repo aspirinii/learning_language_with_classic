@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 // import 'package:csv/csv.dart';
 import 'package:get/get.dart';
-import 'package:flutter/services.dart';//rootbundle
+import 'package:flutter/services.dart'; //rootbundle
 import 'dart:convert';
 
 void main() {
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class SentenceWidget extends StatelessWidget{
+class SentenceWidget extends StatelessWidget {
   SentenceWidget({required this.model});
 
   Sentence model;
@@ -36,60 +36,71 @@ class SentenceWidget extends StatelessWidget{
     // TODO: implement build
     return Column(
       children: [
-        Center(
-          // color: Colors.transparent.withOpacity(0.5),
-          child: Opacity(
-            opacity: 1,
-            child: Text(model.contentE,
-            textAlign: TextAlign.center,),
-          )
-        ),
+        Container(
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+                Color.fromARGB(255, 231, 248, 183),
+                Color.fromARGB(255, 255, 228, 156)
+              ]),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Opacity(
+              opacity: 1,
+              child: Text(
+                model.contentE,
+                textAlign: TextAlign.center,
+              ),
+            )),
         GestureDetector(
-          onTap:(){
+          onTap: () {
             model.changeActivation();
             print('taptap');
           },
-          child: Center(
-            // color: Colors.transparent.withOpacity(0.5),
-            child: Obx(() => AnimatedOpacity(
-              opacity: model.active.value ? 1 : 0,
-              duration: const Duration(milliseconds: 500),
-              child: Text(model.contentK, 
-              textAlign: TextAlign.center,),
-            ))
-          ),
+          child: Container(
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  Color.fromARGB(255, 231, 248, 183),
+                  Color.fromARGB(255, 255, 228, 156)
+                ]),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Obx(() => AnimatedOpacity(
+                    opacity: model.active.value ? 1 : 0,
+                    duration: const Duration(milliseconds: 500),
+                    child: Text(
+                      model.contentK,
+                      textAlign: TextAlign.center,
+                    ),
+                  ))),
         ),
       ],
     );
   }
-
 }
 
-
-class Sentence extends GetxController{
+class Sentence extends GetxController {
   late int id;
   RxBool active = false.obs;
   late String contentK;
   late String contentE;
 
-  Sentence(this.id, this.active , this.contentK, this.contentE);
+  Sentence(this.id, this.active, this.contentK, this.contentE);
 
-  Sentence.fromJson(Map<String, dynamic> json){
+  Sentence.fromJson(Map<String, dynamic> json) {
     id = int.parse(json['index']);
     active.value = false;
     contentE = json['contentE'];
     contentK = json['contentK'];
   }
 
-  changeActivation(){
+  changeActivation() {
     active.value = !active.value;
   }
+}
 
-} 
-
-
-class Controller extends GetxController{
-
+class Controller extends GetxController {
   var dataFromJson;
   var listSentence;
   var map;
@@ -98,22 +109,22 @@ class Controller extends GetxController{
   Future LoadDataJson() async {
     final _rawData = await rootBundle.loadString("assets/frog.json");
 
-    List<Map<String, dynamic>> output = List.from(json.decode(_rawData) as List);
+    List<Map<String, dynamic>> output =
+        List.from(json.decode(_rawData) as List);
 
     print(output.runtimeType);
 
     return output;
   }
 
-
   @override
   onInit() {
-
     dataFromJson = LoadDataJson();
     // print(dataFromJson);
     print('onInit start');
   }
 }
+
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
 
@@ -127,27 +138,19 @@ class MyHomePage extends StatelessWidget {
           title: const Text('개구리왕자'),
         ),
         // // Implement the GridView
-        body: 
-        FutureBuilder(
-          future: c.dataFromJson,
-          builder: (BuildContext context , AsyncSnapshot snap) {
-
-            if(snap.hasData){
+        body: FutureBuilder(
+            future: c.dataFromJson,
+            builder: (BuildContext context, AsyncSnapshot snap) {
+              if (snap.hasData) {
                 // print(snap.data);
                 print("Snap : ${snap.data.runtimeType}");
-                return ListView(
-                  children: [
-                    for (var w in snap.data )
-                      SentenceWidget(model : Sentence.fromJson(w)),
-                  ]
-                );
-                }else{
-              return Text("Wait some time..");
-            }
-          }
-        )
-
-
-        );
+                return ListView(children: [
+                  for (var w in snap.data)
+                    SentenceWidget(model: Sentence.fromJson(w)),
+                ]);
+              } else {
+                return Text("Wait some time..");
+              }
+            }));
   }
 }
