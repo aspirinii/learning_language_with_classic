@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
 }
 
 class SentenceWidget extends StatelessWidget {
-  SentenceWidget({required this.model});
+  SentenceWidget({Key? key, required this.model}) : super(key: key);
 
   Sentence model;
 
@@ -41,16 +41,17 @@ class SentenceWidget extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(colors: [
-                Color.fromARGB(255, 231, 248, 183),
-                Color.fromARGB(255, 255, 228, 156)
+                  Color(0xFFEED8C9),
+                  Color(0xFFEED8C9),
               ]),
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.circular(0),
             ),
             child: Opacity(
               opacity: 1,
               child: Text(
                 model.contentE,
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.left,
+                style: TextStyle(color: Color(0xFF727077))
               ),
             )),
         GestureDetector(
@@ -63,17 +64,18 @@ class SentenceWidget extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-                  Color.fromARGB(255, 231, 248, 183),
-                  Color.fromARGB(255, 255, 228, 156)
+                  Color(0xFFEED8C9),
+                  Color(0xFFEED8C9),
                 ]),
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(0),
               ),
               child: Obx(() => AnimatedOpacity(
                     opacity: model.active.value ? 1 : 0,
                     duration: const Duration(milliseconds: 500),
                     child: Text(
                       model.contentK,
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(color: Color(0xFFA49592))
                     ),
                   ))),
         ),
@@ -135,24 +137,30 @@ class MyHomePage extends StatelessWidget {
   // final List numbers = List.generate(30, (index) => "Item $index");
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('개구리왕자'),
-        ),
-        // // Implement the GridView
-        body: FutureBuilder(
-            future: c.dataFromJson,
-            builder: (BuildContext context, AsyncSnapshot snap) {
-              if (snap.hasData) {
-                // print(snap.data);
-                print("Snap : ${snap.data.runtimeType}");
-                return ListView(children: [
-                  for (var w in snap.data)
-                    SentenceWidget(model: Sentence.fromJson(w)),
-                ]);
-              } else {
-                return Text("Wait some time..");
-              }
-            }));
+    return FutureBuilder(
+      future: c.dataFromJson,
+      builder: (BuildContext context, AsyncSnapshot snap) {
+        if (snap.hasData) {
+        print("Snap : ${snap.data.runtimeType}");
+      
+          return Scaffold (
+            appBar: AppBar(
+              backgroundColor: Color(0xFFE99787),
+              title: Text(snap.data[0]['contentE'],
+                      style: TextStyle(color: Color(0xFF727077)),
+            ),
+            ),
+            // // Implement the GridView
+            body: ListView(children: [
+              for (var w in snap.data)
+                SentenceWidget(model: Sentence.fromJson(w)),
+              ])
+            );
+          } else {
+            return Text("Wait some time..");
+          }
+      }
+
+    );
   }
 }
