@@ -36,24 +36,6 @@ class SentenceWidget extends StatelessWidget {
     // TODO: implement build
     return Column(
       children: [
-        Container(
-            padding: EdgeInsets.all(5),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-                  Color(0xFFEED8C9),
-                  Color(0xFFEED8C9),
-              ]),
-              borderRadius: BorderRadius.circular(0),
-            ),
-            child: Opacity(
-              opacity: 1,
-              child: Text(
-                model.contentE,
-                textAlign: TextAlign.left,
-                style: TextStyle(color: Color(0xFF727077))
-              ),
-            )),
         GestureDetector(
           onTap: () {
             model.changeActivation();
@@ -64,24 +46,99 @@ class SentenceWidget extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-                  Color(0xFFEED8C9),
-                  Color(0xFFEED8C9),
+                    Color(0x66EED8C9),
+                    Color(0x11EED8C9),
+                ]),
+                borderRadius: BorderRadius.circular(0),
+              ),
+              child: Opacity(
+                opacity: 1,
+                child: Text(
+                  model.contentE,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Color(0xFF727077))
+                ),
+              )),
+        ),
+          GestureDetector(
+          onTap: () {
+            model.changeActivation();
+            print('taptap');
+          },
+          child: Container(
+              padding: EdgeInsets.all(5),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  Color(0x66EED8C9),
+                  Color(0x11EED8C9),
                 ]),
                 borderRadius: BorderRadius.circular(0),
               ),
               child: Obx(() => AnimatedOpacity(
                     opacity: model.active.value ? 1 : 0,
                     duration: const Duration(milliseconds: 500),
-                    child: Text(
-                      model.contentK,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(color: Color(0xFFA49592))
-                    ),
+                    child: KoreanParagraph(model: model)
                   ))),
-        ),
+            ),
+
       ],
     );
   }
+}
+class KoreanParagraph extends StatelessWidget{
+  KoreanParagraph({Key? key, required this.model}) : super(key: key);
+
+  Sentence model;
+  @override
+  Widget build(BuildContext context) {
+    if(model.active.value){
+      return  Text(
+        model.contentK,
+        textAlign: TextAlign.left,
+        style: TextStyle(color: Color(0xFFA49592))
+      );
+    }else{ return SizedBox.shrink();}
+    
+
+  }
+// class KoreanParagraph extends StatelessWidget{
+//   KoreanParagraph({Key? key, required this.model}) : super(key: key);
+
+//   Sentence model;
+//   @override
+//   Widget build(BuildContext context) {
+//     // if(model.active.value){
+//       return GestureDetector(
+//             onTap: () {
+//               model.changeActivation();
+//               print('taptap');
+//             },
+//             child: Obx(()=>Container(
+//                 padding: EdgeInsets.all(5),
+//                 width: double.infinity,
+//                 decoration: BoxDecoration(
+//                   gradient: LinearGradient(colors: [
+//                     Color(0x66EED8C9),
+//                     Color(0x11EED8C9),
+//                   ]),
+//                   borderRadius: BorderRadius.circular(0),
+//                 ),
+//                   child: AnimatedOpacity(
+//                       opacity: model.active.value ? 1 : 0,
+//                       duration: const Duration(milliseconds: 500),
+//                       child: Text(
+//                         model.contentK,
+//                         textAlign: TextAlign.left,
+//                         style: TextStyle(color: Color(0xFFA49592))
+//                       ),
+//                     )),)
+            
+//               );
+//     // }else{ return SizedBox.shrink();}
+    
+
+//   }
 }
 
 class Sentence extends GetxController {
