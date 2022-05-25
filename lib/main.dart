@@ -46,8 +46,8 @@ class SentenceWidget extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-                    Color(0x66EED8C9),
-                    Color(0x11EED8C9),
+                    Color(0xFFFAEBEF),
+                    Color(0xFFFAEBEF),
                 ]),
                 borderRadius: BorderRadius.circular(0),
               ),
@@ -56,7 +56,7 @@ class SentenceWidget extends StatelessWidget {
                 child: Text(
                   model.contentE,
                   textAlign: TextAlign.left,
-                  style: TextStyle(color: Color(0xFF727077))
+                  style: TextStyle(color: Color(0xFF333D79))
                 ),
               )),
         ),
@@ -70,8 +70,8 @@ class SentenceWidget extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-                  Color(0x66EED8C9),
-                  Color(0x11EED8C9),
+                  Color(0xFFFAEBEF),
+                  Color(0xFFFAEBEF),
                 ]),
                 borderRadius: BorderRadius.circular(0),
               ),
@@ -79,9 +79,10 @@ class SentenceWidget extends StatelessWidget {
                     opacity: model.active.value ? 1 : 0,
                     duration: const Duration(milliseconds: 500),
                     child: KoreanParagraph(model: model)
-                  ))),
+                  )
+                )
+              ),
             ),
-
       ],
     );
   }
@@ -93,52 +94,15 @@ class KoreanParagraph extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     if(model.active.value){
-      return  Text(
+      return Text(
         model.contentK,
         textAlign: TextAlign.left,
-        style: TextStyle(color: Color(0xFFA49592))
+        style: TextStyle(color: Color(0xFF333D79))
       );
     }else{ return SizedBox.shrink();}
     
 
   }
-// class KoreanParagraph extends StatelessWidget{
-//   KoreanParagraph({Key? key, required this.model}) : super(key: key);
-
-//   Sentence model;
-//   @override
-//   Widget build(BuildContext context) {
-//     // if(model.active.value){
-//       return GestureDetector(
-//             onTap: () {
-//               model.changeActivation();
-//               print('taptap');
-//             },
-//             child: Obx(()=>Container(
-//                 padding: EdgeInsets.all(5),
-//                 width: double.infinity,
-//                 decoration: BoxDecoration(
-//                   gradient: LinearGradient(colors: [
-//                     Color(0x66EED8C9),
-//                     Color(0x11EED8C9),
-//                   ]),
-//                   borderRadius: BorderRadius.circular(0),
-//                 ),
-//                   child: AnimatedOpacity(
-//                       opacity: model.active.value ? 1 : 0,
-//                       duration: const Duration(milliseconds: 500),
-//                       child: Text(
-//                         model.contentK,
-//                         textAlign: TextAlign.left,
-//                         style: TextStyle(color: Color(0xFFA49592))
-//                       ),
-//                     )),)
-            
-//               );
-//     // }else{ return SizedBox.shrink();}
-    
-
-//   }
 }
 
 class Sentence extends GetxController {
@@ -202,9 +166,9 @@ class MyHomePage extends StatelessWidget {
       
           return Scaffold (
             appBar: AppBar(
-              backgroundColor: Color(0xFFE99787),
+              backgroundColor: Color(0xFF333D79),
               title: Text(snap.data[0]['contentE'],
-                      style: TextStyle(color: Color(0xFF727077)),
+                      style: TextStyle(color:  Color(0xAAFAEBEF),),
             ),
             ),
             // // Implement the GridView
