@@ -46,21 +46,20 @@ class SentenceWidget extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-                    Color(0xFFFAEBEF),
-                    Color(0xFFFAEBEF),
+                  // Color(0xFF8E9290),
+                  Color(0xFFA8AEAB),
+                  Color(0xFFD4D5C8),
                 ]),
                 borderRadius: BorderRadius.circular(0),
               ),
               child: Opacity(
                 opacity: 1,
-                child: Text(
-                  model.contentE,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: Color(0xFF333D79))
-                ),
+                child: Text(model.contentE,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(color: Color(0xFF1B2F3A))),
               )),
         ),
-          GestureDetector(
+        GestureDetector(
           onTap: () {
             model.changeActivation();
             print('taptap');
@@ -70,38 +69,34 @@ class SentenceWidget extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-                  Color(0xFFFAEBEF),
-                  Color(0xFFFAEBEF),
+                  Color(0xFFA8AEAB),
+                  Color(0xFFD4D5C8),
                 ]),
                 borderRadius: BorderRadius.circular(0),
               ),
               child: Obx(() => AnimatedOpacity(
-                    opacity: model.active.value ? 1 : 0,
-                    duration: const Duration(milliseconds: 500),
-                    child: KoreanParagraph(model: model)
-                  )
-                )
-              ),
-            ),
+                  opacity: model.active.value ? 1 : 0,
+                  duration: const Duration(milliseconds: 500),
+                  child: KoreanParagraph(model: model)))),
+        ),
       ],
     );
   }
 }
-class KoreanParagraph extends StatelessWidget{
+
+class KoreanParagraph extends StatelessWidget {
   KoreanParagraph({Key? key, required this.model}) : super(key: key);
 
   Sentence model;
   @override
   Widget build(BuildContext context) {
-    if(model.active.value){
-      return Text(
-        model.contentK,
-        textAlign: TextAlign.left,
-        style: TextStyle(color: Color(0xFF333D79))
-      );
-    }else{ return SizedBox.shrink();}
-    
-
+    if (model.active.value) {
+      return Text(model.contentK,
+          textAlign: TextAlign.left,
+          style: TextStyle(color: Color(0xFF1B2F3A)));
+    } else {
+      return SizedBox.shrink();
+    }
   }
 }
 
@@ -159,29 +154,29 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: c.dataFromJson,
-      builder: (BuildContext context, AsyncSnapshot snap) {
-        if (snap.hasData) {
-        print("Snap : ${snap.data.runtimeType}");
-      
-          return Scaffold (
-            appBar: AppBar(
-              backgroundColor: Color(0xFF333D79),
-              title: Text(snap.data[0]['contentE'],
-                      style: TextStyle(color:  Color(0xAAFAEBEF),),
-            ),
-            ),
-            // // Implement the GridView
-            body: ListView(children: [
-              for (var w in snap.data)
-                SentenceWidget(model: Sentence.fromJson(w)),
-              ])
-            );
+        future: c.dataFromJson,
+        builder: (BuildContext context, AsyncSnapshot snap) {
+          if (snap.hasData) {
+            print("Snap : ${snap.data.runtimeType}");
+
+            return Scaffold(
+                appBar: AppBar(
+                  backgroundColor: Color(0xFF333D79),
+                  title: Text(
+                    snap.data[0]['contentE'],
+                    style: TextStyle(
+                      color: Color(0xAAFAEBEF),
+                    ),
+                  ),
+                ),
+                // // Implement the GridView
+                body: ListView(children: [
+                  for (var w in snap.data)
+                    SentenceWidget(model: Sentence.fromJson(w)),
+                ]));
           } else {
             return Text("Wait some time..");
           }
-      }
-
-    );
+        });
   }
 }
