@@ -42,21 +42,19 @@ class SentenceWidget extends StatelessWidget {
             print('taptap');
           },
           child: Container(
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
               width: double.infinity,
               decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  // Color(0xFF8E9290),
+                gradient: const LinearGradient(colors: [
                   Color(0xFFA8AEAB),
                   Color(0xFFD4D5C8),
                 ]),
-                borderRadius: BorderRadius.circular(0),
               ),
               child: Opacity(
                 opacity: 1,
                 child: Text(model.contentE,
                     textAlign: TextAlign.left,
-                    style: TextStyle(color: Color(0xFF1B2F3A))),
+                    style: const TextStyle(color: Color(0xFF1B2F3A))),
               )),
         ),
         GestureDetector(
@@ -65,14 +63,13 @@ class SentenceWidget extends StatelessWidget {
             print('taptap');
           },
           child: Container(
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
               width: double.infinity,
               decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
+                gradient: const LinearGradient(colors: [
                   Color(0xFFA8AEAB),
                   Color(0xFFD4D5C8),
                 ]),
-                borderRadius: BorderRadius.circular(0),
               ),
               child: Obx(() => AnimatedOpacity(
                   opacity: model.active.value ? 1 : 0,
@@ -93,9 +90,9 @@ class KoreanParagraph extends StatelessWidget {
     if (model.active.value) {
       return Text(model.contentK,
           textAlign: TextAlign.left,
-          style: TextStyle(color: Color(0xFF1B2F3A)));
+          style: const TextStyle(color: const Color(0xFF1B2F3A)));
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
   }
 }
@@ -161,10 +158,10 @@ class MyHomePage extends StatelessWidget {
 
             return Scaffold(
                 appBar: AppBar(
-                  backgroundColor: Color(0xFF333D79),
+                  backgroundColor: const Color(0xFF333D79),
                   title: Text(
                     snap.data[0]['contentE'],
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xAAFAEBEF),
                     ),
                   ),
@@ -175,7 +172,7 @@ class MyHomePage extends StatelessWidget {
                     SentenceWidget(model: Sentence.fromJson(w)),
                 ]));
           } else {
-            return Text("Wait some time..");
+            return const Text("Loading ");
           }
         });
   }
