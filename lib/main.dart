@@ -37,16 +37,18 @@ class SentenceWidget extends StatelessWidget {
     return Column(
       children: [
         GestureDetector(
+          // onLongPress: () {
           onTap: () {
             model.changeActivation();
             print('taptap');
           },
           child: Container(
-              padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
               width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: [
-                  Color(0xFFA8AEAB),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  // Color(0xFFA8AEAB),
+                  Color(0xFFD4D5C8),
                   Color(0xFFD4D5C8),
                 ]),
               ),
@@ -63,11 +65,12 @@ class SentenceWidget extends StatelessWidget {
             print('taptap');
           },
           child: Container(
-              padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+              padding: const EdgeInsets.fromLTRB(30, 8, 30, 8),
               width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: [
-                  Color(0xFFA8AEAB),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  // Color(0xFFA8AEAB),
+                  Color(0xFFD4D5C8),
                   Color(0xFFD4D5C8),
                 ]),
               ),
@@ -90,7 +93,7 @@ class KoreanParagraph extends StatelessWidget {
     if (model.active.value) {
       return Text(model.contentK,
           textAlign: TextAlign.left,
-          style: const TextStyle(color: const Color(0xFF1B2F3A)));
+          style: const TextStyle(color: Color(0xFF1B2F3A)));
     } else {
       return const SizedBox.shrink();
     }
@@ -157,6 +160,8 @@ class MyHomePage extends StatelessWidget {
             print("Snap : ${snap.data.runtimeType}");
 
             return Scaffold(
+                backgroundColor: Color(0xFFD4D5C8),
+                 //리스트뷰 사이에 보이는 컬러 ㅋㅋ
                 appBar: AppBar(
                   backgroundColor: const Color(0xFF333D79),
                   title: Text(
@@ -167,12 +172,43 @@ class MyHomePage extends StatelessWidget {
                   ),
                 ),
                 // // Implement the GridView
-                body: ListView(children: [
+                body:
+                  ListView(children: [
                   for (var w in snap.data)
                     SentenceWidget(model: Sentence.fromJson(w)),
                 ]));
           } else {
-            return const Text("Loading ");
+            // return const Text("Loading ");
+            return Center(
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              stops: [
+                0.001,
+                0.2,
+                0.4,
+              ],
+              colors: [
+                Colors.white,
+                Colors.blue,
+                Colors.black,
+              ],
+            )
+          ),
+          child: const Center(
+            child: Text(
+              'Learning with Classic',
+              style: TextStyle(
+                fontSize: 48.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      );
           }
         });
   }
